@@ -12,7 +12,8 @@ public class UserDao {
     Map<String, String> env = System.getenv();
     public void add(User user) throws ClassNotFoundException, SQLException {
         //1. DB 연결을 위한 Connection 가져온다.
-        Class.forName("com.mysql.jdbc.Driver");
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        System.out.println(env.get("DB_HOST"));
         Connection c = DriverManager.getConnection(env.get("DB_HOST"), env.get("DB_USER"), env.get("DB_PASSWORD"));
 
         //2. SQL을 담은 Statement를 만든다.
@@ -33,7 +34,7 @@ public class UserDao {
 
     public User get(String id) throws ClassNotFoundException, SQLException {
         //1. DB 연결을 위한 Connection 가져온다.
-        Class.forName("com.mysql.jdbc.Driver");
+        Class.forName("com.mysql.cj.jdbc.Driver");
         Connection c = DriverManager.getConnection(env.get("DB_HOST"), env.get("DB_USER"), env.get("DB_PASSWORD"));
 
         //2. SQL을 담은 Statement를 만든다.
