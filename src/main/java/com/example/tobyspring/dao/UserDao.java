@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-public class UserDao {
+public abstract class UserDao {
     Map<String, String> env = System.getenv();
     public void add(User user) throws ClassNotFoundException, SQLException {
         //1. DB 연결을 위한 Connection 가져온다.
@@ -57,8 +57,5 @@ public class UserDao {
         return user;
     }
 
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
-//        Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection(env.get("DB_HOST"), env.get("DB_USER"), env.get("DB_PASSWORD"));
-    }
+    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
 }
