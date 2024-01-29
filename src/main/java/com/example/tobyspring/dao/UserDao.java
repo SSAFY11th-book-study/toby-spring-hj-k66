@@ -2,17 +2,19 @@ package com.example.tobyspring.dao;
 
 import com.example.tobyspring.domain.User;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Map;
 
-public abstract class UserDao {
-    Map<String, String> env = System.getenv();
+public class UserDao {
+    private SimpleConnectionMaker simpleConnectionMaker;
+
+    public UserDao(){
+        this.simpleConnectionMaker = new SimpleConnectionMaker();
+    }
     public void add(User user) throws ClassNotFoundException, SQLException {
         //1. DB 연결을 위한 Connection 가져온다.
-        Connection c = getConnection();
+        Connection c = simpleConnectionMaker.getConnection();
 
         //2. SQL을 담은 Statement를 만든다.
         PreparedStatement ps = c.prepareStatement(
@@ -32,7 +34,7 @@ public abstract class UserDao {
 
     public User get(String id) throws ClassNotFoundException, SQLException {
         //1. DB 연결을 위한 Connection 가져온다.
-        Connection c = getConnection();
+        Connection c = simpleConnectionMaker.getConnection();
 
         //2. SQL을 담은 Statement를 만든다.
         PreparedStatement ps = c.prepareStatement(
@@ -56,6 +58,4 @@ public abstract class UserDao {
 
         return user;
     }
-
-    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
 }
