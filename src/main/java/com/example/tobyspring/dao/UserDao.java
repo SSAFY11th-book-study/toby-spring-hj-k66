@@ -7,14 +7,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDao {
-    private SimpleConnectionMaker simpleConnectionMaker;
+    private ConnectionMaker connectionMaker;
 
     public UserDao(){
-        this.simpleConnectionMaker = new SimpleConnectionMaker();
+        this.connectionMaker = new DConnectionMaker();
     }
-    public void add(User user) throws ClassNotFoundException, SQLException {
+    public void add(User user) throws SQLException {
         //1. DB 연결을 위한 Connection 가져온다.
-        Connection c = simpleConnectionMaker.getConnection();
+        Connection c = connectionMaker.makeConnection();
 
         //2. SQL을 담은 Statement를 만든다.
         PreparedStatement ps = c.prepareStatement(
@@ -32,9 +32,9 @@ public class UserDao {
         c.close();
     }
 
-    public User get(String id) throws ClassNotFoundException, SQLException {
+    public User get(String id) throws SQLException {
         //1. DB 연결을 위한 Connection 가져온다.
-        Connection c = simpleConnectionMaker.getConnection();
+        Connection c = connectionMaker.makeConnection();
 
         //2. SQL을 담은 Statement를 만든다.
         PreparedStatement ps = c.prepareStatement(
