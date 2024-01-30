@@ -3,15 +3,16 @@ package com.example.tobyspring;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.example.tobyspring.dao.NUserDao;
+import com.example.tobyspring.dao.ConnectionMaker;
+import com.example.tobyspring.dao.DConnectionMaker;
 import com.example.tobyspring.dao.UserDao;
 import com.example.tobyspring.domain.User;
 import java.sql.SQLException;
 import org.junit.jupiter.api.Test;
 
 public class UserDaoTest {
-
-    private final UserDao userDao = new NUserDao();
+    private final ConnectionMaker connectionMaker = new DConnectionMaker();
+    private final UserDao userDao = new UserDao(connectionMaker);
     @Test
     void findById() throws SQLException, ClassNotFoundException {
         User user = new User();

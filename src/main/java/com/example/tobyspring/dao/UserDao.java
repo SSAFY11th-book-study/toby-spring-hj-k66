@@ -9,8 +9,8 @@ import java.sql.SQLException;
 public class UserDao {
     private ConnectionMaker connectionMaker;
 
-    public UserDao(){
-        this.connectionMaker = new DConnectionMaker();
+    public UserDao(ConnectionMaker connectionMaker){
+        this.connectionMaker = connectionMaker;
     }
     public void add(User user) throws SQLException {
         //1. DB 연결을 위한 Connection 가져온다.
