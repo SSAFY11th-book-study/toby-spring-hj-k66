@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import org.junit.jupiter.api.Test;
 
 public class UserDaoTest {
+
     private final UserDao userDao = new DaoFactory().userDao();
     @Test
     void findById() throws SQLException, ClassNotFoundException {
