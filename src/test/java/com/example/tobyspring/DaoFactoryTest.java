@@ -1,6 +1,5 @@
 package com.example.tobyspring;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -42,4 +41,33 @@ public class DaoFactoryTest {
         assertEquals(userDao1, userDao2);
     }
 
+    @Test
+    @DisplayName("DaoFactory")
+    void factory(){
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(DaoFactory.class);
+        DaoFactory daoFactory1 = applicationContext.getBean("daoFactory", DaoFactory.class);
+        DaoFactory daoFactory2 = applicationContext.getBean("daoFactory", DaoFactory.class);
+
+        assertEquals(daoFactory1, daoFactory2);
+    }
+
+    @Test
+    @DisplayName("call bean")
+    void callBean(){
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(DaoFactory.class);
+//        ConnectionMaker connectionMaker = new DConnectionMaker();
+//        UserDao userDao = applicationContext.getBean("userDao", UserDao.class);
+//        UserDao userDao1 = (UserDao) applicationContext.getBean("userDao",connectionMaker, UserDao.class );
+//        assertEquals(userDao1, userDao);
+
+
+//        UserDao userDao = applicationContext.getBean("userDao",UserDao.class);
+//        AccountDao accountDao = applicationContext.getBean("accountDao", AccountDao.class);
+//        ConnectionMaker connectionMaker = applicationContext.getBean("connectionMaker", ConnectionMaker.class);
+//        UserDao userDao2 = applicationContext2.getBean("userDao",UserDao.class);
+//        AccountDao accountDao2 = applicationContext2.getBean("accountDao", AccountDao.class);
+//        ConnectionMaker connectionMaker2 = applicationContext2.getBean("connectionMaker", ConnectionMaker.class);
+//        assertEquals(userDao, userDao2);
+
+    }
 }
