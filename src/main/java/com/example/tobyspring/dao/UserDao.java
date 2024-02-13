@@ -5,16 +5,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.sql.DataSource;
 
 public class UserDao {
-    private ConnectionMaker connectionMaker;
+    private DataSource dataSource;
 
-    public UserDao(ConnectionMaker connectionMaker){
-        this.connectionMaker = connectionMaker;
+    public UserDao(DataSource dataSource){
+        this.dataSource = dataSource;
     }
     public void add(User user) throws SQLException {
         //1. DB 연결을 위한 Connection 가져온다.
-        Connection c = connectionMaker.makeConnection();
+        Connection c = dataSource.getConnection();
 
         //2. SQL을 담은 Statement를 만든다.
         PreparedStatement ps = c.prepareStatement(
@@ -34,7 +35,7 @@ public class UserDao {
 
     public User get(String id) throws SQLException {
         //1. DB 연결을 위한 Connection 가져온다.
-        Connection c = connectionMaker.makeConnection();
+        Connection c = dataSource.getConnection();
 
         //2. SQL을 담은 Statement를 만든다.
         PreparedStatement ps = c.prepareStatement(

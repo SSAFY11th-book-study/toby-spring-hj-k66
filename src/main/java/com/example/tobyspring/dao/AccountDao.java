@@ -1,10 +1,12 @@
 package com.example.tobyspring.dao;
 
-public class AccountDao {
-    private ConnectionMaker connectionMaker;
+import javax.sql.DataSource;
 
-    public AccountDao(ConnectionMaker connectionMaker){
-        this.connectionMaker = connectionMaker;
+public class AccountDao {
+    private DataSource dataSource;
+
+    public AccountDao(DataSource dataSource){
+        this.dataSource = dataSource;
     }
 
 }

@@ -1,33 +1,37 @@
 package com.example.tobyspring.dao;
 
+import java.sql.Driver;
+import java.util.Map;
+import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 @Configuration
 public class DaoFactory {
-    @Bean
-    public UserDao userDao(){
-        System.out.println("call userDao()");
-        UserDao userDao = new UserDao(connectionMaker());
-        return userDao;
-    }
+
+    Map<String, String> env = System.getenv();
 
     @Bean
-    public UserDao userDao(ConnectionMaker connectionMaker){
-        return new UserDao(connectionMaker);
+    public UserDao userDao(){
+        return new UserDao(dataSource());
     }
 
     @Bean
     public AccountDao accountDao(){
         System.out.println("call accountDao()");
-        AccountDao accountDao = new AccountDao(connectionMaker());
+        AccountDao accountDao = new AccountDao(dataSource());
         return accountDao;
     }
 
 
-    @Bean
-    public ConnectionMaker connectionMaker(){
-        System.out.println("call connectionMaker()");
-        return new DConnectionMaker();
+    private DataSource dataSource(){
+        SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
+        dataSource.setDriverClass(Driver.class);
+        dataSource.setUrl(env.get("DB_HOST"));
+        dataSource.setUsername(env.get("DB_USER"));
+        dataSource.setPassword(env.get("DB_PASSWORD"));
+        return dataSource;
     }
+
 }
