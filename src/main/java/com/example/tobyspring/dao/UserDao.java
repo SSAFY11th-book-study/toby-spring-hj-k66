@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.sql.DataSource;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 public class UserDao {
     private DataSource dataSource;
@@ -72,17 +73,21 @@ public class UserDao {
         //3. 만들어진 statement를 실행
         //4. 조회의 경우, SQL 쿼리 실행 결과를 ResultSet으로 받아서 정보를 저장할 오브젝트(user)에 옮겨준다.
         ResultSet rs = ps.executeQuery();
-        rs.next();
-        User user = new User();
-        user.setId(rs.getString("id"));
-        user.setName(rs.getString("name"));
-        user.setPassword(rs.getString("password"));
+        User user = null;
+
+        if(rs.next()){
+            user = new User();
+            user.setId(rs.getString("id"));
+            user.setName(rs.getString("name"));
+            user.setPassword(rs.getString("password"));
+        }
+
 
         //5. 작업 중 생성된 Connection, Statement 등 리소스는 작업을 마친 후 반드시 닫는다.
         rs.close();
         ps.close();
         c.close();
-
+        if(user == null) throw new EmptyResultDataAccessException(0);
         return user;
     }
 }
