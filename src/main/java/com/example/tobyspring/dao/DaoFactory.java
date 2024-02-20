@@ -1,6 +1,5 @@
 package com.example.tobyspring.dao;
 
-import java.sql.Driver;
 import java.util.Map;
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +26,7 @@ public class DaoFactory {
 
     private DataSource dataSource(){
         SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
-        dataSource.setDriverClass(Driver.class);
+        dataSource.setDriverClass(com.mysql.cj.jdbc.Driver.class);
         dataSource.setUrl(env.get("DB_HOST"));
         dataSource.setUsername(env.get("DB_USER"));
         dataSource.setPassword(env.get("DB_PASSWORD"));
