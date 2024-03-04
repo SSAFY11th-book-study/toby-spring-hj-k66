@@ -1,5 +1,6 @@
 package com.example.tobyspring.dao;
 
+import java.sql.Driver;
 import java.util.Map;
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
@@ -7,30 +8,26 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 @Configuration
-public class DaoFactory {
-
+public class CountingDaoFactory {
     Map<String, String> env = System.getenv();
 
+//    @Bean
+//    public UserDao userDao(){
+//        return new UserDao(connectionMaker());
+//    }
+
     @Bean
-    public UserDao userDao(){
-        return new UserDao(dataSource());
+    public DataSource connectionMaker(){
+        return realConnectionMaker();
     }
 
     @Bean
-    public AccountDao accountDao(){
-        System.out.println("call accountDao()");
-        AccountDao accountDao = new AccountDao(dataSource());
-        return accountDao;
-    }
-
-
-    private DataSource dataSource(){
+    public DataSource realConnectionMaker(){
         SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
-        dataSource.setDriverClass(com.mysql.cj.jdbc.Driver.class);
+        dataSource.setDriverClass(Driver.class);
         dataSource.setUrl(env.get("DB_HOST"));
         dataSource.setUsername(env.get("DB_USER"));
         dataSource.setPassword(env.get("DB_PASSWORD"));
         return dataSource;
     }
-
 }

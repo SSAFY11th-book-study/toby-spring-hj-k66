@@ -8,10 +8,8 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-public abstract class UserDao {
+public class UserDao {
     private DataSource dataSource;
-
-    abstract protected PreparedStatement makeStatement(Connection c) throws SQLException;
 
     public UserDao(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -89,23 +87,8 @@ public abstract class UserDao {
     }
 
     public void add(User user) throws SQLException {
-        //1. DB 연결을 위한 Connection 가져온다.
-        Connection c = dataSource.getConnection();
-
-        //2. SQL을 담은 Statement를 만든다.
-        PreparedStatement ps = c.prepareStatement(
-                "insert into users(id,name,password) values(?,?,?)"
-        );
-        ps.setString(1, user.getId());
-        ps.setString(2, user.getName());
-        ps.setString(3, user.getPassword());
-
-        //3. 만들어진 Statement를 실행
-        ps.executeUpdate();
-
-        //4. 작업 중 생성된 Connection, Statement 등 리소스는 작업을 마친 후 반드시 닫는다.
-        ps.close();
-        c.close();
+        StatementStrategy st = new AddStatement(user);
+        jdbcContextWithStatementStrategy(st);
     }
 
     public User get(String id) throws SQLException {
