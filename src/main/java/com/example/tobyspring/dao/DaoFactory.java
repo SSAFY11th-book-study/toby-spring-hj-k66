@@ -1,5 +1,6 @@
 package com.example.tobyspring.dao;
 
+import com.example.tobyspring.domain.User;
 import java.util.Map;
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +14,14 @@ public class DaoFactory {
 
     @Bean
     public UserDao userDao(){
-        return new UserDao(dataSource());
+        UserDao userDao = new UserDao(dataSource());
+        userDao.setJdbcContext(jdbcContext());
+        return userDao;
+    }
+
+    @Bean
+    public JdbcContext jdbcContext(){
+        return new JdbcContext(dataSource());
     }
 
     @Bean
