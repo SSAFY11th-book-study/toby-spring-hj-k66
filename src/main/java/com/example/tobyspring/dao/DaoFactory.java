@@ -11,9 +11,13 @@ public class DaoFactory {
 
     Map<String, String> env = System.getenv();
 
+//    @Bean
+//    public UserDao userDao(){
+//        return new UserDao(dataSource());
+//    }
     @Bean
-    public UserDao userDao(){
-        return new UserDao(dataSource());
+    public UserDaoDeleteAll userDaoDeleteAll(){
+        return new UserDaoDeleteAll(dataSource());
     }
 
     @Bean

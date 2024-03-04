@@ -8,8 +8,10 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-public class UserDao {
+public abstract class UserDao {
     private DataSource dataSource;
+
+    abstract protected PreparedStatement makeStatement(Connection c) throws SQLException;
 
     public UserDao(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -21,7 +23,7 @@ public class UserDao {
 
         try {
             c = dataSource.getConnection();
-            ps = c.prepareStatement("delete from users");
+            ps = makeStatement(c);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -132,4 +134,5 @@ public class UserDao {
         }
         return user;
     }
+
 }
