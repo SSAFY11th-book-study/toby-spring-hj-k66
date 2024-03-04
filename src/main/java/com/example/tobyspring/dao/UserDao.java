@@ -15,7 +15,7 @@ public class UserDao {
         this.dataSource = dataSource;
     }
 
-    public void jdbcContextWithStatementStrategy(StatementStrategy stmt) throws SQLException{
+    public void jdbcContextWithStatementStrategy(StatementStrategy stmt) throws SQLException {
         Connection c = null;
         PreparedStatement ps = null;
 
@@ -44,6 +44,13 @@ public class UserDao {
     }
 
     public void deleteAll() throws SQLException {
+        class DeleteAllStatement implements StatementStrategy {
+            @Override
+            public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+                PreparedStatement ps = c.prepareStatement("delete from users");
+                return ps;
+            }
+        }
         StatementStrategy st = new DeleteAllStatement();
         jdbcContextWithStatementStrategy(st);
     }
@@ -87,7 +94,24 @@ public class UserDao {
     }
 
     public void add(User user) throws SQLException {
-        StatementStrategy st = new AddStatement(user);
+        class AddStatement implements StatementStrategy {
+
+            @Override
+            public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+                //2. SQL을 담은 Statement를 만든다.
+                PreparedStatement ps = c.prepareStatement(
+                        "insert into users(id,name,password) values(?,?,?)"
+                );
+                ps.setString(1, user.getId());
+                ps.setString(2, user.getName());
+                ps.setString(3, user.getPassword());
+
+                return ps;
+
+            }
+        }
+
+        StatementStrategy st = new AddStatement();
         jdbcContextWithStatementStrategy(st);
     }
 
