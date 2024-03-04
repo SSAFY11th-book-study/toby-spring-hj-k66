@@ -12,6 +12,12 @@ public class JdbcContext {
         this.dataSource = dataSource;
     }
 
+    // 클라이언트
+    public  void executeSql(String query) throws SQLException{
+        workWithStatementStrategy(c -> c.prepareStatement(query));  //콜백 : 익명 내부 클래스
+    }
+
+    // 템플릿
     public void workWithStatementStrategy(StatementStrategy stmt) throws SQLException {
         Connection c = null;
         PreparedStatement ps = null;

@@ -19,12 +19,10 @@ public class UserDao {
 
 
     public void deleteAll() throws SQLException {
-        executeSql("delete from users");
+        this.jdbcContext.executeSql("delete from users");
     }
 
-    private void executeSql(String query) throws SQLException{
-        this.jdbcContext.workWithStatementStrategy(c -> c.prepareStatement(query));
-    }
+
 
     public int getCount() throws SQLException {
         Connection c = null;
